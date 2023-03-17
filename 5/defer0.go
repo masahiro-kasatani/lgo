@@ -2,24 +2,24 @@ package main
 
 import "fmt"
 
-func funcX() {
-	fmt.Print("A")
-}
-
-func funcY(s string) {
+func funcX(s string) {
 	fmt.Print(s)
 }
 
-func funcZ(s string) func() {
+func funcY(s string) func() {
 	fmt.Print(s)
-	return func() { fmt.Print("B") }
+	return func() { fmt.Print("Y") }
 }
 
 func main() {
-	defer funcX()
-	s := "C"
+	s := "A"
+	defer funcX(s)
+	s = "B"
+	defer funcX(s)
 	defer funcY(s)
-	s = "D"
-	defer funcZ(s)
-	defer funcZ(s)()
+	defer funcY(s)()
+	defer func() {
+		s = "C"
+		fmt.Print(s)
+	}()
 }
